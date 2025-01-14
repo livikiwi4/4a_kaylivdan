@@ -1,4 +1,4 @@
-# Der Code für mein Spiel kommt hier
+# Der Code für mein Spiel kommt hier zz
 import curses
 
 def main(stdscr):
