@@ -16,10 +16,9 @@ def main(stdscr):
 
     # Define the "L" shaped block
     l_block = [
-        (0, 0),  # Top part of the "L"
-        (1, 0),  # Middle part of the "L"
-        (2, 0),  # Bottom part of the "spine" of the "L"
-        (2, 1),  # Bottom horizontal part of the "L"
+        (2, 1),  # 1st block of the square
+        (2, 2)   # 2st block of the square
+             
     ]
 
     # Turn off cursor
@@ -53,8 +52,13 @@ def main(stdscr):
         key = stdscr.getch()
 
         # Move right with right arrow key
-        if key == curses.KEY_RIGHT:
-            pos_x += 1
+        if key == curses.KEY_UP and pos_y >= 0 :
+            pos_y -= 1
+        if key == curses.KEY_DOWN and pos_y <= 2:
+            pos_y += 1
+        
+
+        
 
         # Exit on 'q' press
         elif key == ord('q'):
