@@ -52,10 +52,11 @@ def main(stdscr):
         key = stdscr.getch()
 
         # Move right with right arrow key
-        if key == curses.KEY_UP and pos_y >= 0 :
+        if key == curses.KEY_UP and pos_y >= -1:
             pos_y -= 1
-        if key == curses.KEY_DOWN and pos_y <= 2:
+        if key == curses.KEY_DOWN and pos_y <= 0:
             pos_y += 1
+            
         
 
         
