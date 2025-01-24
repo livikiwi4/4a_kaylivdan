@@ -21,6 +21,12 @@ def main(stdscr):
              
     ]
 
+    # Define the triangle shaped block
+    triangle_block = [
+    (2, 0),  # 1st block of the square
+    (0, 1)   # 2st block of the square
+
+    ]
     # Turn off cursor
     curses.curs_set(0)
 
@@ -45,6 +51,18 @@ def main(stdscr):
             # Farbe abwählen
             stdscr.attroff(curses.color_pair(1))
 
+        # Draw the other blocks
+        for dy, dx in triangle_block:
+            y, x = 2 + dy, 4 + dx
+            # Farbe auswählen
+            stdscr.attron(curses.color_pair(1))
+            try:
+                # Zeichen malen
+                stdscr.addch(y, x, '█')
+            except:
+                pass
+            # Farbe abwählen
+            stdscr.attroff(curses.color_pair(1))
         # Refresh the screen to show the update
         stdscr.refresh()
 
@@ -58,15 +76,18 @@ def main(stdscr):
             pos_y += 1
 
 
-    
-            
-        
 
-        
 
-        # Exit on 'q' press
+
+
+
+
         elif key == ord('q'):
             break
 
-# Initialize curses
+
 curses.wrapper(main)
+
+
+
+
