@@ -54,7 +54,7 @@ def main(stdscr):
             # Farbe abwählen
             stdscr.attroff(curses.color_pair(1))
 
-        # Draw the other blocks
+        # Draw the obstacle block
         for dy, dx in obstacle_block:
             y, x = 2 + dy, obstacle_x + dx
             # Farbe auswählen
@@ -74,13 +74,14 @@ def main(stdscr):
 
 
         # Move right with right arrow key
-        if key == curses.KEY_UP and pos_y >= 1:
+        if key == curses.KEY_UP and pos_y > 0:
             pos_y -= 1
-        if key == curses.KEY_DOWN and pos_y <= 1:
+        elif key == curses.KEY_DOWN and pos_y < height -1:
             pos_y += 1
         elif key == ord('q'):
              break
-
+            
+        # Move the obstacle left with left arrow key
         if key == curses.KEY_ENTER:  # Spiel starten
             obstacle_x -= 1
 
@@ -88,19 +89,5 @@ def main(stdscr):
         if obstacle_x + len(obstacle_block) < 0:
             obstacle_x = width  # Optional: Hindernis von rechts neu starten lassen
             
-            
-
-        
-
-
-
-
-
-    
-
 
 curses.wrapper(main)
-
-
-
-
