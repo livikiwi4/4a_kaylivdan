@@ -13,18 +13,21 @@ def main(stdscr):
     # Set up initial position
     pos_x = 0 # Zeile 0
     pos_y = 0 # Spalte 0
+    obstacle_x = 10 # Zeile 4
+    obstacle_y = 2 # Spalte 2
+    
 
-    # Define the "L" shaped block
+    # Define the square shaped block
     l_block = [
         (0, 0),  # 1st block of the square
         (0, 1)   # 2st block of the square
              
     ]
 
-    # Define the triangle shaped block
-    triangle_block = [
-    (2, 0),  # 1st block of the square
-    (0, 1)   # 2st block of the square
+    # Define the obstacle block
+    obstacle_block = [
+    (2, 0),  # 1st block of the obstacle
+    (0, 1)   # 2st block of the obstacle
 
     ]
     # Turn off cursor
@@ -38,7 +41,7 @@ def main(stdscr):
         # Clear the screen before drawing
         stdscr.clear()
 
-        # Draw the "L" block
+        # Draw the square block
         for dy, dx in l_block:
             y, x = pos_y + dy, pos_x + dx
             # Farbe auswählen
@@ -52,8 +55,8 @@ def main(stdscr):
             stdscr.attroff(curses.color_pair(1))
 
         # Draw the other blocks
-        for dy, dx in triangle_block:
-            y, x = 2 + dy, 4 + dx
+        for dy, dx in obstacle_block:
+            y, x = 2 + dy, obstacle_x + dx
             # Farbe auswählen
             stdscr.attron(curses.color_pair(1))
             try:
@@ -69,21 +72,31 @@ def main(stdscr):
         # Get user input
         key = stdscr.getch()
 
+
         # Move right with right arrow key
         if key == curses.KEY_UP and pos_y >= 1:
             pos_y -= 1
         if key == curses.KEY_DOWN and pos_y <= 1:
             pos_y += 1
-
-
-
-
-
-
-
-
         elif key == ord('q'):
-            break
+             break
+
+        if key == curses.KEY_ENTER:  # Spiel starten
+            obstacle_x -= 1
+
+        # Hindernis zurücksetzen, wenn es aus dem Fenster verschwindet
+        if obstacle_x + len(obstacle_block) < 0:
+            obstacle_x = width  # Optional: Hindernis von rechts neu starten lassen
+            
+            
+
+        
+
+
+
+
+
+    
 
 
 curses.wrapper(main)
