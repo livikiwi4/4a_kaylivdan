@@ -1,5 +1,5 @@
-# Der Code für mein Spiel kommt hier zz
 import curses
+import random
 
 def main(stdscr):
     # Initialize color support
@@ -13,20 +13,21 @@ def main(stdscr):
     # Set up initial position
     pos_x = 0 # Zeile 0
     pos_y = 0 # Spalte 0
-    obstacle_x = 10 # Zeile 4
-    obstacle_y = 2 # Spalte 2
-    
+    obstacle_x =  10 # Zeile 4
+    obstacle_y = random.randint(1, 5) # Spalte 2
+
 
     # Define the square shaped block
     l_block = [
         (0, 0),  # 1st block of the square
         (0, 1)   # 2st block of the square
-             
+
     ]
 
     # Define the obstacle block
+
     obstacle_block = [
-    (2, 0),  # 1st block of the obstacle
+    (0, 0),  # 1st block of the obstacle
     (0, 1)   # 2st block of the obstacle
 
     ]
@@ -56,7 +57,7 @@ def main(stdscr):
 
         # Draw the obstacle block
         for dy, dx in obstacle_block:
-            y, x = 2 + dy, obstacle_x + dx
+            y, x = obstacle_y + dy, obstacle_x + dx
             # Farbe auswählen
             stdscr.attron(curses.color_pair(1))
             try:
@@ -80,98 +81,15 @@ def main(stdscr):
             pos_y += 1
         elif key == ord('q'):
              break
-            
+
         # Move the obstacle left with left arrow key
         if key == curses.KEY_ENTER:  # Spiel starten
-            obstacle_x -= 1
+          pass
+        obstacle_x -= 1
 
         # Hindernis zurücksetzen, wenn es aus dem Fenster verschwindet
         if obstacle_x + len(obstacle_block) < 0:
             obstacle_x = width  # Optional: Hindernis von rechts neu starten lassen
-            
 
-curses.wrapper(main)
-import curses
-import time
-
-def main(stdscr):
-    # Initialize color support
-    curses.start_color()
-    curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_GREEN)
-
-    # Clear the screen
-    stdscr.clear()
-
-    # Set up initial position
-    pos_x = 0  # Player's initial column
-    pos_y = 0  # Player's initial row
-    obstacle_x = 20  # Initial column of the obstacle
-    obstacle_y = 5  # Initial row of the obstacle
-
-    # Define the player block
-    player_block = [
-        (0, 0),
-        (0, 1)
-    ]
-
-    # Define the obstacle block
-    obstacle_block = [
-        (0, 0),
-        (0, 1)
-    ]
-
-    # Turn off cursor
-    curses.curs_set(0)
-
-    # Game speed (time between obstacle movements)
-    game_speed = 0.1
-
-    while True:
-        # Clear the screen before drawing
-        stdscr.clear()
-
-        # Draw the player block
-        for dy, dx in player_block:
-            y, x = pos_y + dy, pos_x + dx
-            stdscr.attron(curses.color_pair(1))
-            try:
-                stdscr.addch(y, x, '█')
-            except:
-                pass
-            stdscr.attroff(curses.color_pair(1))
-
-        # Draw the obstacle block
-        for dy, dx in obstacle_block:
-            y, x = obstacle_y + dy, obstacle_x + dx
-            stdscr.attron(curses.color_pair(1))
-            try:
-                stdscr.addch(y, x, '█')
-            except:
-                pass
-            stdscr.attroff(curses.color_pair(1))
-
-        # Refresh the screen to show the update
-        stdscr.refresh()
-
-        # Move the obstacle left
-        obstacle_x -= 1
-
-        # Reset obstacle position if it moves off-screen
-        if obstacle_x + len(obstacle_block) < 0:
-            obstacle_x = width - 1
-            obstacle_y = (obstacle_y + 2) % (height - 1)  # Change row to make it dynamic
-
-        # Handle player input
-        key = stdscr.getch()
-
-        if key == curses.KEY_UP and pos_y > 0:
-            pos_y -= 1
-        elif key == curses.KEY_DOWN and pos_y < height - 1:
-            pos_y += 1
-        elif key == ord('q'):  # Quit game
-            break
-
-        # Add delay for game speed
-        time.sleep(game_speed)
 
 curses.wrapper(main)
