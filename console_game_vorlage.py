@@ -93,3 +93,17 @@ def main(stdscr):
 
 
 curses.wrapper(main)
+
+meine_kor = [x]
+meine_kor = [[x1,y1], [x2, y2], [x3, y3]]
+for index in range(len(meine_kor)):
+    meine_kor[index][0] = meine_kor[index][0] + 1
+    meine_kor.append(meine_kor[index])
+    meine_kor.pop(0)
+def main(stdscr):
+    # Initialize color support 
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_GREEN)
+# Clear the screen
+stdscr.clear()
+
