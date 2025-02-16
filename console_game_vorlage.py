@@ -121,6 +121,22 @@ def main(stdscr):
 # Clear the screen
 stdscr.clear()
 
+    def __init__(self):
+        self.score = 0
+
+    def add_points(self, points):
+        self.score += points
+        print(f"Punkte: {self.score}")
+
+    def reset(self):
+        self.score = 0
+        print("Punkte zurückgesetzt.")
+
+    def get_score(self):
+        return self.score
+
+
+
 
 
 
