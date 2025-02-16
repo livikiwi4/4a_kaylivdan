@@ -1,5 +1,6 @@
 import curses
 import random
+import time # externe Bibliothek um Zeit zu managen
 
 def main(stdscr):
     # Initialize color support
@@ -12,9 +13,10 @@ def main(stdscr):
 
     # Set up initial position
     pos_x = 0 # Zeile 0
-    pos_y = 0 # Spalte 0
-    obstacle_x =  10 # Zeile 4
+    pos_y = 3 # Spalte 3
+    obstacle_x =  10 # Zeile 10
     obstacle_y = random.randint(1, 5) # Spalte 2
+    
 
 
     # Define the square shaped block
@@ -29,8 +31,8 @@ def main(stdscr):
     obstacle_block = [
     (0, 0),  # 1st block of the obstacle
     (0, 1)   # 2st block of the obstacle
-
     ]
+
     # Turn off cursor
     curses.curs_set(0)
 
@@ -67,6 +69,7 @@ def main(stdscr):
                 pass
             # Farbe abwählen
             stdscr.attroff(curses.color_pair(1))
+        
         # Refresh the screen to show the update
         stdscr.refresh()
 
@@ -86,10 +89,21 @@ def main(stdscr):
         if key == curses.KEY_ENTER:  # Spiel starten
           pass
         obstacle_x -= 1
+        time.sleep(0.05)
+
+        stdscr.nodelay(1) # wartet bei stdscr.getch() nicht mehr
+
+        if key != -1: # Damit es kein Fehler gibt falls nichts gedrückt wird
+            time.sleep(1) # wartet kurze Zeit vor das es die Schleife wiederholt
+
 
         # Hindernis zurücksetzen, wenn es aus dem Fenster verschwindet
         if obstacle_x + len(obstacle_block) < 0:
             obstacle_x = width  # Optional: Hindernis von rechts neu starten lassen
+
+        # Kollisionserkennung
+        if pos_x == obstacle_x and pos_y == obstacle_y:
+            break
 
 
 curses.wrapper(main)
@@ -106,4 +120,10 @@ def main(stdscr):
     curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_GREEN)
 # Clear the screen
 stdscr.clear()
+
+
+
+
+
+
 
