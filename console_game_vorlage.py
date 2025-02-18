@@ -18,6 +18,13 @@ def main(stdscr):
     obstacle_y = random.randint(1, 5) # Spalte 2
     
 
+    meine_kor = [[[10,random.randint(1, 5)]], [[5,random.randint(1, 5)]], [[7,random.randint(1, 5)]]]
+    """
+    for index in range(len(meine_kor)):
+        meine_kor[index][0] = meine_kor[index][0] + 1
+        meine_kor.append(meine_kor[index])
+        meine_kor.pop(0)
+"""
 
     # Define the square shaped block
     l_block = [
@@ -44,31 +51,35 @@ def main(stdscr):
         # Clear the screen before drawing
         stdscr.clear()
 
+  
+
         # Draw the square block
-        for dy, dx in l_block:
-            y, x = pos_y + dy, pos_x + dx
+        for dx, dy in l_block:
+            x, y = pos_x + dx, pos_y + dy
             # Farbe auswählen
             stdscr.attron(curses.color_pair(1))
             try:
                 # Zeichen malen
-                stdscr.addch(y, x, '█')
+                stdscr.addch(x, y, '█')
             except:
                 pass
             # Farbe abwählen
             stdscr.attroff(curses.color_pair(1))
 
         # Draw the obstacle block
-        for dy, dx in obstacle_block:
-            y, x = obstacle_y + dy, obstacle_x + dx
-            # Farbe auswählen
-            stdscr.attron(curses.color_pair(1))
-            try:
-                # Zeichen malen
-                stdscr.addch(y, x, '█')
-            except:
-                pass
-            # Farbe abwählen
-            stdscr.attroff(curses.color_pair(1))
+        for obstacle_block in meine_kor:
+          
+          for dx, dy in obstacle_block:
+              x, y = obstacle_x + dx, obstacle_y + dy
+              # Farbe auswählen
+              stdscr.attron(curses.color_pair(1))
+              try:
+                  # Zeichen malen
+                  stdscr.addch(x, y, '█')
+              except:
+                  pass
+              # Farbe abwählen
+              stdscr.attroff(curses.color_pair(1))
         
         # Refresh the screen to show the update
         stdscr.refresh()
@@ -94,7 +105,7 @@ def main(stdscr):
         stdscr.nodelay(1) # wartet bei stdscr.getch() nicht mehr
 
         if key != -1: # Damit es kein Fehler gibt falls nichts gedrückt wird
-            time.sleep(1) # wartet kurze Zeit vor das es die Schleife wiederholt
+            time.sleep(0.1) # wartet kurze Zeit vor das es die Schleife wiederholt
 
 
         # Hindernis zurücksetzen, wenn es aus dem Fenster verschwindet
@@ -109,7 +120,7 @@ def main(stdscr):
 curses.wrapper(main)
 
 meine_kor = [x]
-meine_kor = [[x1,y1], [x2, y2], [x3, y3]]
+meine_kor = [[10,random.randint(1, 5)], [5,random.randint(1, 5)], [7,random.randint(1, 5)]]
 for index in range(len(meine_kor)):
     meine_kor[index][0] = meine_kor[index][0] + 1
     meine_kor.append(meine_kor[index])
@@ -121,19 +132,21 @@ def main(stdscr):
 # Clear the screen
 stdscr.clear()
 
-    def __init__(self):
+def __init__(self):
         self.score = 0
 
-    def add_points(self, points):
+def add_points(self, points):
         self.score += points
         print(f"Punkte: {self.score}")
 
-    def reset(self):
+def reset(self):
         self.score = 0
         print("Punkte zurückgesetzt.")
 
-    def get_score(self):
+def get_score(self):
         return self.score
+
+
 
 
 
