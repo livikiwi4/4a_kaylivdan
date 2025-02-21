@@ -14,11 +14,13 @@ def main(stdscr):
     # Set up initial position
     pos_x = 0 # Zeile 0
     pos_y = 3 # Spalte 3
-    obstacle_x =  10 # Zeile 10
+    obstacle_x =  20 # Zeile 10
     obstacle_y = random.randint(1, 5) # Spalte 2
-    
 
-    meine_kor = [[[10,random.randint(1, 5)]], [[5,random.randint(1, 5)]], [[7,random.randint(1, 5)]]]
+
+
+
+    meine_kor = [[20,random.randint(1, 5)], [20,random.randint(1, 5)], [20,random.randint(1, 5)]]
     """
     for index in range(len(meine_kor)):
         meine_kor[index][0] = meine_kor[index][0] + 1
@@ -50,12 +52,13 @@ def main(stdscr):
 
         # Clear the screen before drawing
         stdscr.clear()
+        stdscr.nodelay(1) # wartet bei stdscr.getch() nicht mehr
 
-  
+
 
         # Draw the square block
         for dx, dy in l_block:
-            x, y = pos_x + dx, pos_y + dy
+            x, y = pos_y + dx, pos_x + dy
             # Farbe auswählen
             stdscr.attron(curses.color_pair(1))
             try:
@@ -67,10 +70,10 @@ def main(stdscr):
             stdscr.attroff(curses.color_pair(1))
 
         # Draw the obstacle block
-        for obstacle_block in meine_kor:
-          
+        for obst_y, obst_x in meine_kor:
+
           for dx, dy in obstacle_block:
-              x, y = obstacle_x + dx, obstacle_y + dy
+              x, y = obst_x + dx, obst_y + dy
               # Farbe auswählen
               stdscr.attron(curses.color_pair(1))
               try:
@@ -80,7 +83,7 @@ def main(stdscr):
                   pass
               # Farbe abwählen
               stdscr.attroff(curses.color_pair(1))
-        
+
         # Refresh the screen to show the update
         stdscr.refresh()
 
@@ -99,10 +102,18 @@ def main(stdscr):
         # Move the obstacle left with left arrow key
         if key == curses.KEY_ENTER:  # Spiel starten
           pass
-        obstacle_x -= 1
+
+        zeit1 = time.time()
+
+
+        for element in meine_kor:
+          element[0]= element[0]-1
+
         time.sleep(0.05)
 
-        stdscr.nodelay(1) # wartet bei stdscr.getch() nicht mehr
+        if time.time() - zeit1 > 1:
+          meine_koor.append(meine_koor[1])
+
 
         if key != -1: # Damit es kein Fehler gibt falls nichts gedrückt wird
             time.sleep(0.1) # wartet kurze Zeit vor das es die Schleife wiederholt
