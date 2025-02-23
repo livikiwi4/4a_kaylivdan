@@ -130,6 +130,7 @@ def main(stdscr):
 
 curses.wrapper(main)
 
+
 meine_kor = [x]
 meine_kor = [[10,random.randint(1, 5)], [5,random.randint(1, 5)], [7,random.randint(1, 5)]]
 for index in range(len(meine_kor)):
@@ -167,3 +168,12 @@ def get_score(self):
 
 
 
+score=0
+for obstacle in obstacles: 
+  if player.rect.right > obstacle.rect.right and not obstacle.passed:
+    score += 1
+    obstacle.passed = True
+    # Damit es nicht mehrfach gezählt wird
+  font = pygame.font.Font(None, 36)
+   score_text = font.render(f"Score: {score}", True, (255, 255, 255))
+   screen.blit(score_text, (10, 10))
