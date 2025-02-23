@@ -101,7 +101,8 @@ def main(stdscr):
 
         # Move the obstacle left with left arrow key
         if key == curses.KEY_ENTER:  # Spiel starten
-          pass
+          stdscr.keypad(true)
+
 
         zeit1 = time.time()
 
@@ -111,8 +112,12 @@ def main(stdscr):
 
         time.sleep(0.05)
 
-        if time.time() - zeit1 > 1:
+        if time.time() - zeit1 > 1000:
           meine_koor.append(meine_koor[1])
+
+        if time.time() - zeit1 > 2000:
+          meine_koor.append(meine_koor[2])
+
 
 
         if key != -1: # Damit es kein Fehler gibt falls nichts gedrückt wird
@@ -175,5 +180,5 @@ for obstacle in obstacles:
     obstacle.passed = True
     # Damit es nicht mehrfach gezählt wird
   font = pygame.font.Font(None, 36)
-   score_text = font.render(f"Score: {score}", True, (255, 255, 255))
-   screen.blit(score_text, (10, 10))
+  score_text = font.render(f"Score: {score}", True, (255, 255, 255))
+  screen.blit(score_text, (10, 10))
