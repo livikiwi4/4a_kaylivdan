@@ -14,13 +14,13 @@ def main(stdscr):
     # Set up initial position
     pos_x = 0 # Zeile 0
     pos_y = 3 # Spalte 3
-    obstacle_x =  20 # Zeile 10
+    obstacle_x =  50 # Zeile 10
     obstacle_y = random.randint(1, 5) # Spalte 2
 
 
 
 
-    meine_kor = [[20,random.randint(1, 5)], [20,random.randint(1, 5)], [20,random.randint(1, 5)]]
+    meine_kor = [[50,random.randint(1, 5)], [50,random.randint(1, 5)], [50,random.randint(1, 5)]]
     """
     for index in range(len(meine_kor)):
         meine_kor[index][0] = meine_kor[index][0] + 1
@@ -103,6 +103,9 @@ def main(stdscr):
         if key == curses.KEY_ENTER:  # Spiel starten
           stdscr.keypad(true)
 
+        # Hindernis zurücksetzen, wenn es aus dem Fenster verschwindet
+        if obstacle_x + len(obstacle_block) < 0:
+            obstacle_x = width  # Optional: Hindernis von rechts neu starten lassen
 
         zeit1 = time.time()
 
@@ -115,23 +118,27 @@ def main(stdscr):
         if time.time() - zeit1 > 1000:
           meine_koor.append(meine_koor[1])
 
-        if time.time() - zeit1 > 2000:
+        elif time.time() - zeit1 > 2000:
           meine_koor.append(meine_koor[2])
 
-
+        # Kollisionserkennung
+        for obstacle in meine_kor:
+            obst_x, obst_y = obstacle
+            if (pos_x, pos_y) in [(obst_x + dx, obst_y + dy) for dx, dy in obstacle_block]:
+                stdscr.addstr(10, 10, "GAME OVER")
+                stdscr.refresh()
+                time.sleep(2)
+                return  # Beendet das Spiel
 
         if key != -1: # Damit es kein Fehler gibt falls nichts gedrückt wird
             time.sleep(0.1) # wartet kurze Zeit vor das es die Schleife wiederholt
-
 
         # Hindernis zurücksetzen, wenn es aus dem Fenster verschwindet
         if obstacle_x + len(obstacle_block) < 0:
             obstacle_x = width  # Optional: Hindernis von rechts neu starten lassen
 
-        # Kollisionserkennung
-        if pos_x == obstacle_x and pos_y == obstacle_y:
-            break
 
+    
 
 curses.wrapper(main)
 
