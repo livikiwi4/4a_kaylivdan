@@ -8,6 +8,9 @@ def main(stdscr):
     # 1 Farbenpaar bestimmen, Vordergrundfarbe Blau, Hintergrundfarbe Grün
     curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_GREEN)
 
+
+    var = "1"
+
     # Clear the screen
     stdscr.clear()
 
@@ -15,8 +18,9 @@ def main(stdscr):
     pos_x = 0 # Zeile 0
     pos_y = 3 # Spalte 3
     obstacle_x =  50 # Zeile 10
-    obstacle_y = random.randint(1, 5) # Spalte 2
+    obstacle_y = random.randint(1,5 ) # Spalte 2
 
+    zeit1 = time.time()
 
 
 
@@ -53,7 +57,7 @@ def main(stdscr):
         # Clear the screen before drawing
         stdscr.clear()
         stdscr.nodelay(1) # wartet bei stdscr.getch() nicht mehr
-
+        stdscr.addch(1, 60, var)
 
 
         # Draw the square block
@@ -84,17 +88,16 @@ def main(stdscr):
               # Farbe abwählen
               stdscr.attroff(curses.color_pair(1))
 
-        # Refresh the screen to show the update
-        stdscr.refresh()
+
 
         # Get user input
         key = stdscr.getch()
 
 
         # Move right with right arrow key
-        if key == curses.KEY_UP and pos_y > 0:
+        if key == curses.KEY_UP and pos_y > 1:
             pos_y -= 1
-        elif key == curses.KEY_DOWN and pos_y < height -1:
+        elif key == curses.KEY_DOWN and pos_y <5:
             pos_y += 1
         elif key == ord('q'):
              break
@@ -107,20 +110,25 @@ def main(stdscr):
         if obstacle_x + len(obstacle_block) < 0:
             obstacle_x = width  # Optional: Hindernis von rechts neu starten lassen
 
-        zeit1 = time.time()
+
 
 
         for element in meine_kor:
           element[0]= element[0]-1
 
-        time.sleep(0.05)
+        time.sleep(0.15)
 
-        if time.time() - zeit1 > 1000:
-          meine_koor.append(meine_koor[1])
+        if time.time() - zeit1 > 2:
+          zeit1 = time.time()
+          var = "4"
+          meine_kor.append([50,random.randint(1,5)])
 
+
+        """
         elif time.time() - zeit1 > 2000:
           meine_koor.append(meine_koor[2])
 
+        """
         # Kollisionserkennung
         for obstacle in meine_kor:
             obst_x, obst_y = obstacle
@@ -137,8 +145,10 @@ def main(stdscr):
         if obstacle_x + len(obstacle_block) < 0:
             obstacle_x = width  # Optional: Hindernis von rechts neu starten lassen
 
+        # Refresh the screen to show the update
+        stdscr.refresh()
 
-    
+
 
 curses.wrapper(main)
 
@@ -171,21 +181,3 @@ def get_score(self):
         return self.score
 
 
-
-
-
-
-
-
-
-
-
-score=0
-for obstacle in obstacles: 
-  if player.rect.right > obstacle.rect.right and not obstacle.passed:
-    score += 1
-    obstacle.passed = True
-    # Damit es nicht mehrfach gezählt wird
-  font = pygame.font.Font(None, 36)
-  score_text = font.render(f"Score: {score}", True, (255, 255, 255))
-  screen.blit(score_text, (10, 10))
