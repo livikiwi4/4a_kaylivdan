@@ -51,6 +51,7 @@ def main(stdscr):
 
     # Get the dimensions of the window
     height, width = stdscr.getmaxyx()
+    score = 0  # Score-Zähler initialisieren
 
     while True:
 
@@ -88,9 +89,18 @@ def main(stdscr):
               # Farbe abwählen
               stdscr.attroff(curses.color_pair(1))
 
+             #🎯 Score während des Spiels anzeigen
+              stdscr.addstr(0, 2, f"Score: {score}")  # Zeigt den Score oben links an
+
+           # Refresh the screen to show the update
+              stdscr.refresh()
+
+
+
 
 
         # Get user input
+
         key = stdscr.getch()
 
 
@@ -115,6 +125,10 @@ def main(stdscr):
 
         for element in meine_kor:
           element[0]= element[0]-1
+          if element[0] < 0:  # Wenn Hindernis den linken Rand verlässt
+           element[0] = 20  # Hindernis zurücksetzen
+           element[1] = random.randint(1, 5)  # Neue zufällige Höhe
+           score += 1  # Score erhöhen
 
         time.sleep(0.15)
 
@@ -129,14 +143,16 @@ def main(stdscr):
           meine_koor.append(meine_koor[2])
 
         """
-        # Kollisionserkennung
         for obstacle in meine_kor:
-            obst_x, obst_y = obstacle
-            if (pos_x, pos_y) in [(obst_x + dx, obst_y + dy) for dx, dy in obstacle_block]:
-                stdscr.addstr(10, 10, "GAME OVER")
-                stdscr.refresh()
-                time.sleep(2)
-                return  # Beendet das Spiel
+          obst_y, obst_x = obstacle
+          for dx, dy in l_block:  # Überprüfe ALLE Teile des Spielerblocks
+            player_x, player_y = pos_x + dy, pos_y + dx  # Berechne echte Spielerkoordinaten
+            for ox, oy in obstacle_block:  # Überprüfe ALLE Teile des Hindernisblocks
+                if (player_x, player_y) == (obst_x + ox, obst_y + oy):
+                    stdscr.addstr(10, 10, f"GAME OVER Score: {score}")
+                    stdscr.refresh()
+                    time.sleep(2)
+                    return  # Beendet das Spiel
 
         if key != -1: # Damit es kein Fehler gibt falls nichts gedrückt wird
             time.sleep(0.1) # wartet kurze Zeit vor das es die Schleife wiederholt
@@ -144,6 +160,21 @@ def main(stdscr):
         # Hindernis zurücksetzen, wenn es aus dem Fenster verschwindet
         if obstacle_x + len(obstacle_block) < 0:
             obstacle_x = width  # Optional: Hindernis von rechts neu starten lassen
+
+        def __init__(self):
+          self.score = 0
+
+        def add_points(self, points):
+          self.score += points
+          print(f"Punkte: {self.score}")
+
+        def reset(self):
+          self.score = 0
+          print("Punkte zurückgesetzt.")
+
+        def get_score(self):
+          return self.score
+
 
         # Refresh the screen to show the update
         stdscr.refresh()
@@ -153,18 +184,9 @@ def main(stdscr):
 curses.wrapper(main)
 
 
-meine_kor = [x]
-meine_kor = [[10,random.randint(1, 5)], [5,random.randint(1, 5)], [7,random.randint(1, 5)]]
-for index in range(len(meine_kor)):
-    meine_kor[index][0] = meine_kor[index][0] + 1
-    meine_kor.append(meine_kor[index])
-    meine_kor.pop(0)
-def main(stdscr):
-    # Initialize color support 
-    curses.start_color()
-    curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_GREEN)
-# Clear the screen
-stdscr.clear()
+
+
+
 
 def __init__(self):
         self.score = 0
@@ -179,5 +201,7 @@ def reset(self):
 
 def get_score(self):
         return self.score
+
+
 
 
