@@ -10,8 +10,6 @@ def main(stdscr):
     curses.init_pair(2, curses.COLOR_MAGENTA, curses.COLOR_MAGENTA)  # Player (magenta)
 
 
-
-
     # Clear the screen
     stdscr.clear()
 
@@ -22,8 +20,7 @@ def main(stdscr):
     obstacle_y = random.randint(1,5 ) # Spalte 2
 
     zeit1 = time.time()
-
-
+    
 
     meine_kor = [[50,random.randint(1, 5)], [50,random.randint(1, 5)], [50,random.randint(1, 5)]]
     """
@@ -98,8 +95,6 @@ def main(stdscr):
 
 
 
-
-
         # Get user input
 
         key = stdscr.getch()
@@ -120,9 +115,14 @@ def main(stdscr):
 
 
         for element in meine_kor:
-          element[0]= element[0]-1
+          element[0] -=1
         if element[0] < 0:
           score += 1  # Score um 1 erhöhen
+        # Refresh the screen to show the update
+        stdscr.refresh()
+        #🎯 Score während des Spiels anzeigen
+        stdscr.addstr(0, 2, f"Score: {score}")  # Zeigt den Score oben links an
+
 
         time.sleep(0.15)
 
@@ -149,29 +149,23 @@ def main(stdscr):
                     time.sleep(2)
                     return  # Beendet das Spiel
 
-        if key != -1: # Damit es kein Fehler gibt falls nichts gedrückt wird
+        if key != -1: # Damit es keinen Fehler gibt falls nichts gedrückt wird
             time.sleep(0.1) # wartet kurze Zeit vor das es die Schleife wiederholt
 
         if obstacle_x + len(obstacle_block) < 0:
-           meine_kor.remove([obstacle_x, obstacle_y])  # Hindernis aus der Liste entfernen
+           meine_kor = [obs for obs in meine_kor if obs[0] >= 0]  # Hindernis aus der Liste entfernen
 
-
-
+ 
         # Refresh the screen to show the update
         stdscr.refresh()
-
-
+        #🎯 Score während des Spiels anzeigen
+        stdscr.addstr(0, 2, f"Score: {score}")  # Zeigt den Score oben links an
 
 curses.wrapper(main)
 
-
-
-
-
-
 def __init__(self):
         self.score = 0
-
+       
 def add_points(self, points):
         self.score += points
         print(f"Punkte: {self.score}")
@@ -183,6 +177,7 @@ def reset(self):
 def get_score(self):
         return self.score
 
-
-
-
+ # Refresh the screen to show the update
+        stdscr.refresh()
+        #🎯 Score während des Spiels anzeigen
+        stdscr.addstr(0, 2, f"Score: {score}")  # Zeigt den Score oben links an
