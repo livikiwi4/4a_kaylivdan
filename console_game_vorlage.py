@@ -86,6 +86,13 @@ def main(stdscr):
                   pass
               # Farbe abwählen
               stdscr.attroff(curses.color_pair(1))
+              # Hindernisse bewegen
+              for obstacle in obstacles:
+                  obstacle[0] -= 1  # Nach links bewegen
+
+              # Punkte vergeben, wenn Hindernis links verschwindet
+              obstacles = [obs for obs in obstacles if obs[0] >= 0]
+              score += len([obs for obs in obstacles if obs[0] < 0])
 
              #🎯 Score während des Spiels anzeigen
               stdscr.addstr(0, 2, f"Score: {score}")  # Zeigt den Score oben links an
