@@ -22,7 +22,7 @@ def main(stdscr):
     zeit1 = time.time()
 
 
-    meine_kor = [[50,random.randint(1, 5)], [50,random.randint(1, 5)], [50,random.randint(1, 5)]]
+    meine_kor = [[50,random.randint(1, 5)], [60,random.randint(1, 5)], [70,random.randint(1, 5)]]
     """
     for index in range(len(meine_kor)):
         meine_kor[index][0] = meine_kor[index][0] + 1
@@ -115,14 +115,16 @@ def main(stdscr):
 
         # Move the obstacle left with left arrow key
         if key == curses.KEY_ENTER:  # Spiel starten
-          stdscr.keypad(true)
+          stdscr.keypad(True)
 
 
 
         for element in meine_kor:
           element[0] -= 1
-          if element[0] < 0:
-            score += 1  # Score um 1 erhöhen
+          # Score erst erhöhen, wenn das erste Element verschwindet  
+          if meine_kor and meine_kor[0][0] < 0:
+            score += 1
+            meine_kor.pop(0)  # Hindernis entfernen
         # Refresh the screen to show the update
         stdscr.refresh()
         #🎯 Score während des Spiels anzeigen
@@ -143,12 +145,17 @@ def main(stdscr):
         """
 
         #Kollisionserkennung
+        collision_count = 0  # Zählt, wie viele Teile des Blocks kollidieren
         for obstacle in meine_kor:
           obst_x, obst_y = obstacle
           for dx, dy in l_block:  # Überprüfe ALLE Teile des Spielerblocks
             player_x, player_y = pos_x + dy, pos_y + dx  # Berechne echte Spielerkoordinaten
             for ox, oy in obstacle_block:  # Überprüfe ALLE Teile des Hindernisblocks
                 if (player_y, player_x) == (obst_y + dy, obst_x + dx):
+                  collision_count += 1  # Erhöhe den Zähler
+
+        # Nur wenn ALLE Teile des Blocks auf das Hindernis treffen → Spiel beenden
+        if collision_count == len(l_block) * len(obstacle_block):  
                     stdscr.addstr(10, 10, f"GAME OVER Score: {score}")
                     stdscr.refresh()
                     time.sleep(2)
@@ -157,7 +164,7 @@ def main(stdscr):
         if key != -1: # Damit es keinen Fehler gibt falls nichts gedrückt wird
             time.sleep(0.1) # wartet kurze Zeit vor das es die Schleife wiederholt
 
-            obstacles = [ob for ob in obstacles if ob.x + len(ob.block) >= 0]
+            meine_kor = [ob for ob in meine_kor if ob[0] >= 0]
 
         # Refresh the screen to show the update
             stdscr.refresh()
