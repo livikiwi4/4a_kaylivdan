@@ -143,6 +143,19 @@ def main(stdscr):
           zeit1 = time.time()
           meine_kor.append([50,random.randint(1,5)])
 
+        # Verbesserte Kollisionserkennung
+        for obstacle in meine_kor:
+            obst_x, obst_y = obstacle
+            for dx, dy in l_block:
+                player_x, player_y = pos_x + dy, pos_y + dx
+                for ox, oy in obstacle_block:
+                    obstacle_x, obstacle_y = obst_x + ox, obst_y + oy
+                    if player_x == obstacle_x and player_y == obstacle_y:
+                        stdscr.addstr(10, 10, f"GAME OVER Score: {score}")
+                        stdscr.refresh()
+                        time.sleep(2)
+                        return
+
 
         """
         elif time.time() - zeit1 > 2000:
@@ -166,6 +179,19 @@ def main(stdscr):
                             stdscr.refresh()
                             time.sleep(2)
                             return  # Beendet das Spiel
+
+        # Verbesserte Kollisionserkennung
+            for obstacle in meine_kor:
+                obst_x, obst_y = obstacle
+                for dx, dy in l_block:
+                    player_x, player_y = pos_x + dy, pos_y + dx
+                    for ox, oy in obstacle_block:
+                        obstacle_x, obstacle_y = obst_x + ox, obst_y + oy
+                        if player_x == obstacle_x and player_y == obstacle_y:
+                            stdscr.addstr(10, 10, f"GAME OVER Score: {score}")
+                            stdscr.refresh()
+                            time.sleep(2)
+                            return
 
 
         if key != -1: # Damit es keinen Fehler gibt falls nichts gedrückt wird
