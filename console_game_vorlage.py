@@ -6,12 +6,18 @@ def main(stdscr):
     # Initialize color support
     curses.start_color()
     # 1 Farbenpaar bestimmen, Vordergrundfarbe Blau, Hintergrundfarbe Grün
-    curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLUE)
-    curses.init_pair(2, curses.COLOR_MAGENTA, curses.COLOR_MAGENTA)  # Player (magenta)
+    curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_MAGENTA, curses.COLOR_BLACK)  # Player (magenta)
 
 
-    # Clear the screen
-    stdscr.clear()
+    # Setze den gesamten Bildschirm-Hintergrund auf schwarz
+    stdscr.clear()  # Löscht den Bildschirm
+    stdscr.refresh()  # Refresh, um den Bildschirm zu zeichnen
+    stdscr.bkgd(' ', curses.color_pair(0))  # Setzt den Hintergrund auf schwarz
+
+
+
+
 
     # Set up initial position
     pos_x = 0 # Zeile 0
@@ -155,16 +161,19 @@ def main(stdscr):
                   collision_count += 1  # Erhöhe den Zähler
 
         # Nur wenn ALLE Teile des Blocks auf das Hindernis treffen → Spiel beenden
-        if collision_count == len(l_block) * len(obstacle_block):  
-                    stdscr.addstr(10, 10, f"GAME OVER Score: {score}")
-                    stdscr.refresh()
-                    time.sleep(2)
-                    return  # Beendet das Spiel
+                  if collision_count == len(l_block) * len(obstacle_block):  
+                            stdscr.addstr(10, 10, f"GAME OVER Score: {score}")
+                            stdscr.refresh()
+                            time.sleep(2)
+                            return  # Beendet das Spiel
+
 
         if key != -1: # Damit es keinen Fehler gibt falls nichts gedrückt wird
             time.sleep(0.1) # wartet kurze Zeit vor das es die Schleife wiederholt
 
             meine_kor = [ob for ob in meine_kor if ob[0] >= 0]
+
+
 
         # Refresh the screen to show the update
             stdscr.refresh()
