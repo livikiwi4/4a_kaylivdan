@@ -138,7 +138,7 @@ def main(stdscr):
 
         time.sleep(0.15)
 
-        if time.time() - zeit1 > 2:
+        if time.time() - zeit1 > 0.75:
           zeit1 = time.time()
           meine_kor.append([50,random.randint(1,5)])
 
@@ -155,7 +155,7 @@ def main(stdscr):
                         time.sleep(2)
                         return
         if key != -1: # Damit es keinen Fehler gibt falls nichts gedrückt wird
-            time.sleep(0.1) # wartet kurze Zeit vor das es die Schleife wiederholt
+            time.sleep(0.075) # wartet kurze Zeit vor das es die Schleife wiederholt
 
         meine_kor = [ob for ob in meine_kor if ob[0] >= 0]
 
